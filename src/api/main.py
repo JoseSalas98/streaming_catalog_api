@@ -23,7 +23,7 @@ data_src_app = FastAPI()
 def home(): 
     return {"Hello": "World"}
 
-@data_src_app.get("/get_max/{year}/{plataform}")
+@data_src_app.get("/get_max/{year}/{platform}")
 #Añadir un query parameter que permita discriminar entre min(película) y season(series)
 def get_max(
     year: int = Path(
@@ -33,11 +33,11 @@ def get_max(
         gt=0,
         example=2004
     ),
-    #plataform debe ser del tipo de dato plataform: enum, que seria una enumeración de los
-    #serivios de streaming que proveen las fuentes de datos"""
-    plataform: str = Path(
+    #platform debe ser del tipo de dato platform: enum, que seria una enumeración de los
+    #serivios de streaming que proveen las fuentes de datos
+    platform: str = Path(
         ...,
-        title="Plataform",
+        title="Platform",
         description="This is the streaming services provider",
         min_length=1,
         max_length=15,
@@ -48,18 +48,18 @@ def get_max(
 
     Args:
         year (int): _description_
-        plataform (str): _description_
+        platform (str): _description_
 
     Returns:
         int: _description_
     """
-    return {"Print": f"El filme/ serie con mayor duración para el año {year}, en la plataforma {plataform} fue: [filme/ serie]"}
+    return {"Print": f"El filme/ serie con mayor duración para el año {year}, en la platforma {platform} fue: [filme/ serie]"}
 
-@data_src_app.get("/get_count_plataform/{plataform}")
-def get_count_plataform(
-    plataform: str = Path(
+@data_src_app.get("/get_count_platform/{platform}")
+def get_count_platform(
+    platform: str = Path(
         ...,
-        title="Plataform",
+        title="Platform",
         description="This is the streaming services provider",
         min_length=1,
         max_length=15,
@@ -69,17 +69,45 @@ def get_count_plataform(
     """_summary_
 
     Args:
-        plataform (str): _description_
+        platform (str): _description_
 
     Returns:
         int: _description_
     """
-    return {"Print": f"El número de filme/ serie para la plataforma {plataform} es de: [numero total]"}
+    return {"Print": f"El número de filme/ serie para la platforma {platform} es de: [número total]"}
 
-@data_src_app.get("/get_listedin")
-def get_listedin():
-        return {"Print": f"Este es el endpoint get_listedin y retorna la cantidad de veces que se reproduce un genero por plataforma y su frecuencia"}
+@data_src_app.get("/get_listedin/{platform}")
+def get_listedin(
+    platform: str = Path(
+        ...,
+        title="Platform",
+        description="This is the streaming services provider",
+        min_length=1,
+        max_length=15,
+        example="Amazon Prime"
+    ),
+    #title_genre debe ser del tipo de dato title_genre: enum, que seria una enumeración de los
+    #genero disponibles para las series/ películas proporcionadas
+    title_genre: Optional[str] = Query(
+        None,
+        min_length=1, 
+        max_length=50,
+        title="Title Genre",
+        description="This is the title genre. It's between 1 and 50 characters",
+        example="Action"
+        )
+    ):
+        """_summary_
+
+    Args:
+        platform (str): _description_
+        title_genre (str): _description_
+
+    Returns:
+        int: _description_
+    """
+        return {"Print": f"El número total de títulos de {title_genre} en la plataforma {platform} es de: [número total]"}
 
 @data_src_app.get("/get_actor")
 def get_actor():
-        return {"Print": f"Este es el endpoint get_actor y retorna el actor que más se repite se acuerdo a la plataforma y el año"}
+        return {"Print": f"Este es el endpoint get_actor y retorna el actor que más se repite se acuerdo a la platforma y el año"}
