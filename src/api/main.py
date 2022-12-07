@@ -24,6 +24,7 @@ def home():
     return {"Hello": "World"}
 
 @data_src_app.get("/get_max/{year}/{plataform}")
+#Añadir un query parameter que permita discriminar entre min(película) y season(series)
 def get_max(
     year: int = Path(
         ...,
@@ -33,7 +34,7 @@ def get_max(
         example=2004
     ),
     #plataform debe ser del tipo de dato plataform: enum, que seria una enumeración de los
-    #serivios de streaming que proveen las fuentes de datos
+    #serivios de streaming que proveen las fuentes de datos"""
     plataform: str = Path(
         ...,
         title="Plataform",
@@ -43,11 +44,37 @@ def get_max(
         example="Amazon Prime"
     )
     ):
+    """_summary_
+
+    Args:
+        year (int): _description_
+        plataform (str): _description_
+
+    Returns:
+        int: _description_
+    """
     return {"Print": f"El filme/ serie con mayor duración para el año {year}, en la plataforma {plataform} fue: [filme/ serie]"}
 
-@data_src_app.get("/get_count_plataform")
-def get_count_plataform():
-    return {"Print": f"Este es el endpoint get_count_plataform y retorna la cantidad de películas y series por plataforma"}
+@data_src_app.get("/get_count_plataform/{plataform}")
+def get_count_plataform(
+    plataform: str = Path(
+        ...,
+        title="Plataform",
+        description="This is the streaming services provider",
+        min_length=1,
+        max_length=15,
+        example="Amazon Prime"
+    )
+    ):
+    """_summary_
+
+    Args:
+        plataform (str): _description_
+
+    Returns:
+        int: _description_
+    """
+    return {"Print": f"El número de filme/ serie para la plataforma {plataform} es de: [numero total]"}
 
 @data_src_app.get("/get_listedin")
 def get_listedin():
@@ -56,4 +83,3 @@ def get_listedin():
 @data_src_app.get("/get_actor")
 def get_actor():
         return {"Print": f"Este es el endpoint get_actor y retorna el actor que más se repite se acuerdo a la plataforma y el año"}
-
