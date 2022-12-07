@@ -23,9 +23,27 @@ data_src_app = FastAPI()
 def home(): 
     return {"Hello": "World"}
 
-@data_src_app.get("/get_max")
-def get_max():
-    return {"Print": f"Este es el endpoint get_max y retorna la máxima duración de film por año y plataforma"}
+@data_src_app.get("/get_max/{year}/{plataform}")
+def get_max(
+    year: int = Path(
+        ...,
+        title="Year",
+        description="This is the year of movie/series first stream",
+        gt=0,
+        example=2004
+    ),
+    #plataform debe ser del tipo de dato plataform: enum, que seria una enumeración de los
+    #serivios de streaming que proveen las fuentes de datos
+    plataform: str = Path(
+        ...,
+        title="Plataform",
+        description="This is the streaming services provider",
+        min_length=1,
+        max_length=15,
+        example="Amazon Prime"
+    )
+    ):
+    return {"Print": f"El filme/ serie con mayor duración para el año {year}, en la plataforma {plataform} fue: [filme/ serie]"}
 
 @data_src_app.get("/get_count_plataform")
 def get_count_plataform():
