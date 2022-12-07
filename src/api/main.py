@@ -76,16 +76,8 @@ def get_count_platform(
     """
     return {"Print": f"El número de filme/ serie para la platforma {platform} es de: [número total]"}
 
-@data_src_app.get("/get_listedin/{platform}")
+@data_src_app.get("/get_listedin")
 def get_listedin(
-    platform: str = Path(
-        ...,
-        title="Platform",
-        description="This is the streaming services provider",
-        min_length=1,
-        max_length=15,
-        example="Amazon Prime"
-    ),
     #title_genre debe ser del tipo de dato title_genre: enum, que seria una enumeración de los
     #genero disponibles para las series/ películas proporcionadas
     title_genre: Optional[str] = Query(
@@ -100,13 +92,12 @@ def get_listedin(
         """_summary_
 
     Args:
-        platform (str): _description_
         title_genre (str): _description_
 
     Returns:
         int: _description_
     """
-        return {"Print": f"El número total de títulos de {title_genre} en la plataforma {platform} es de: [número total]"}
+        return {"Print": f"El número total de títulos de {title_genre} en la plataforma [platform] es de: [número total]"}
 
 @data_src_app.get("/get_actor/{platform}/{year}")
 def get_actor(
