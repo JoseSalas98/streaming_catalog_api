@@ -108,6 +108,33 @@ def get_listedin(
     """
         return {"Print": f"El número total de títulos de {title_genre} en la plataforma {platform} es de: [número total]"}
 
-@data_src_app.get("/get_actor")
-def get_actor():
-        return {"Print": f"Este es el endpoint get_actor y retorna el actor que más se repite se acuerdo a la platforma y el año"}
+@data_src_app.get("/get_actor/{platform}/{year}")
+def get_actor(
+    #platform debe ser del tipo de dato platform: enum, que seria una enumeración de los
+    #serivios de streaming que proveen las fuentes de datos
+    platform: str = Path(
+        ...,
+        title="Platform",
+        description="This is the streaming services provider",
+        min_length=1,
+        max_length=15,
+        example="Amazon Prime"
+    ),
+    year: int = Path(
+        ...,
+        title="Year",
+        description="This is the year of movie/series first stream",
+        gt=0,
+        example=2004
+    )
+    ):
+    """_summary_
+
+    Args:
+        platform (str): _description_
+        year (int): _description_
+
+    Returns:
+        int: _description_
+    """
+    return {"Print": f"El actor con mayor apariciones en la plataforma {platform}, para el año {year} fue: [nombre del actor]"}
