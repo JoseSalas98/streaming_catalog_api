@@ -44,14 +44,15 @@ def get_max(
         example="Amazon Prime"
     )
     ):
-    """_summary_
+    """This function returns the title with the longest duration, 
+    according to the year of streaming and the streaming service provider.
 
     Args:
-        year (int): _description_
-        platform (str): _description_
+        year (int): Year of movie/series first stream.
+        platform (str): Streaming services provider.
 
     Returns:
-        int: _description_
+        obj: Query response.
     """
     return {"Print": f"El filme/ serie con mayor duración para el año {year}, en la platforma {platform} fue: [filme/ serie]"}
 
@@ -66,13 +67,14 @@ def get_count_platform(
         example="Amazon Prime"
     )
     ):
-    """_summary_
+    """This function returns the number of titles, by type available in 
+    streaming service.
 
     Args:
-        platform (str): _description_
+        platform (str): Streaming services provider.
 
     Returns:
-        int: _description_
+        obj: Query response.
     """
     return {"Print": f"El número de filme/ serie para la platforma {platform} es de: [número total]"}
 
@@ -89,13 +91,12 @@ def get_listedin(
         example="Action"
         )
     ):
-        """_summary_
+        """This function returns the number of titles by genre for the service in which it appears most frequently.
 
     Args:
-        title_genre (str): _description_
-
+        title_genre (str): Optional, basic filme/ series genre.
     Returns:
-        int: _description_
+        obj: Query response.
     """
         return {"Print": f"El número total de títulos de {title_genre} en la plataforma [platform] es de: [número total]"}
 
@@ -119,13 +120,14 @@ def get_actor(
         example=2004
     )
     ):
-    """_summary_
+    """This function returns the actor with the most appearances in 
+    the streaming service, according to the year indicated.
 
     Args:
-        platform (str): _description_
-        year (int): _description_
+        year (int): Year of movie/series first stream.
+        platform (str): Streaming services provider.
 
     Returns:
-        int: _description_
+        obj: Query response.
     """
     return {"Print": f"El actor con mayor apariciones en la plataforma {platform}, para el año {year} fue: [nombre del actor]"}
