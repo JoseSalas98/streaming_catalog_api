@@ -58,7 +58,7 @@ target/
 
 # DotEnv configuration
 .env
-api_venv
+venv_api
 
 # Database
 *.db
