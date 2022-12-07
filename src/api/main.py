@@ -23,19 +23,111 @@ data_src_app = FastAPI()
 def home(): 
     return {"Hello": "World"}
 
-@data_src_app.get("/get_max")
-def get_max():
-    return {"Print": f"Este es el endpoint get_max y retorna la máxima duración de film por año y plataforma"}
+@data_src_app.get("/get_max/{year}/{platform}")
+#Añadir un query parameter que permita discriminar entre min(película) y season(series)
+def get_max(
+    year: int = Path(
+        ...,
+        title="Year",
+        description="This is the year of movie/series first stream",
+        gt=0,
+        example=2004
+    ),
+    #platform debe ser del tipo de dato platform: enum, que seria una enumeración de los
+    #serivios de streaming que proveen las fuentes de datos
+    platform: str = Path(
+        ...,
+        title="Platform",
+        description="This is the streaming services provider",
+        min_length=1,
+        max_length=15,
+        example="Amazon Prime"
+    )
+    ):
+    """This function returns the title with the longest duration, 
+    according to the year of streaming and the streaming service provider.
 
-@data_src_app.get("/get_count_plataform")
-def get_count_plataform():
-    return {"Print": f"Este es el endpoint get_count_plataform y retorna la cantidad de películas y series por plataforma"}
+    Args:
+        year (int): Year of movie/series first stream.
+        platform (str): Streaming services provider.
+
+    Returns:
+        obj: Query response.
+    """
+    return {"Print": f"El filme/ serie con mayor duración para el año {year}, en la platforma {platform} fue: [filme/ serie]"}
+
+@data_src_app.get("/get_count_platform/{platform}")
+def get_count_platform(
+    platform: str = Path(
+        ...,
+        title="Platform",
+        description="This is the streaming services provider",
+        min_length=1,
+        max_length=15,
+        example="Amazon Prime"
+    )
+    ):
+    """This function returns the number of titles, by type available in 
+    streaming service.
+
+    Args:
+        platform (str): Streaming services provider.
+
+    Returns:
+        obj: Query response.
+    """
+    return {"Print": f"El número de filme/ serie para la platforma {platform} es de: [número total]"}
 
 @data_src_app.get("/get_listedin")
-def get_listedin():
-        return {"Print": f"Este es el endpoint get_listedin y retorna la cantidad de veces que se reproduce un genero por plataforma y su frecuencia"}
+def get_listedin(
+    #title_genre debe ser del tipo de dato title_genre: enum, que seria una enumeración de los
+    #genero disponibles para las series/ películas proporcionadas
+    title_genre: Optional[str] = Query(
+        None,
+        min_length=1, 
+        max_length=50,
+        title="Title Genre",
+        description="This is the title genre. It's between 1 and 50 characters",
+        example="Action"
+        )
+    ):
+        """This function returns the number of titles by genre for the service in which it appears most frequently.
 
-@data_src_app.get("/get_actor")
-def get_actor():
-        return {"Print": f"Este es el endpoint get_actor y retorna el actor que más se repite se acuerdo a la plataforma y el año"}
+    Args:
+        title_genre (str): Optional, basic filme/ series genre.
+    Returns:
+        obj: Query response.
+    """
+        return {"Print": f"El número total de títulos de {title_genre} en la plataforma [platform] es de: [número total]"}
 
+@data_src_app.get("/get_actor/{platform}/{year}")
+def get_actor(
+    #platform debe ser del tipo de dato platform: enum, que seria una enumeración de los
+    #serivios de streaming que proveen las fuentes de datos
+    platform: str = Path(
+        ...,
+        title="Platform",
+        description="This is the streaming services provider",
+        min_length=1,
+        max_length=15,
+        example="Amazon Prime"
+    ),
+    year: int = Path(
+        ...,
+        title="Year",
+        description="This is the year of movie/series first stream",
+        gt=0,
+        example=2004
+    )
+    ):
+    """This function returns the actor with the most appearances in 
+    the streaming service, according to the year indicated.
+
+    Args:
+        year (int): Year of movie/series first stream.
+        platform (str): Streaming services provider.
+
+    Returns:
+        obj: Query response.
+    """
+    return {"Print": f"El actor con mayor apariciones en la plataforma {platform}, para el año {year} fue: [nombre del actor]"}
