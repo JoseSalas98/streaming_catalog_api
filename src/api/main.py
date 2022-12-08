@@ -14,8 +14,6 @@ from fastapi import Body, Query, Path
 #Instantiate Fastapi class
 data_src_app = FastAPI()
 
-#Models
-
 #Paths operations
 #Get
 #Endpoints
@@ -42,14 +40,28 @@ def get_max(
         min_length=1,
         max_length=15,
         example="Amazon Prime"
-    )
+    ),
+       title_time: Optional[str] = Query(
+        None,
+        min_length=1, 
+        max_length=5,
+        title="Title Time",
+        description="This is the title length"
+        )
     ):
     """This function returns the title with the longest duration, 
     according to the year of streaming and the streaming service provider.
 
     Args:
         year (int): Year of movie/series first stream.
-        platform (str): Streaming services provider.
+        platform (str): Streaming services provider:
+        [
+            "amazon_prime",
+            "disney_plus",
+            "hulu",
+            "netflix"
+        ].
+        title_time (str): Title length
 
     Returns:
         obj: Query response.
@@ -71,7 +83,13 @@ def get_count_platform(
     streaming service.
 
     Args:
-        platform (str): Streaming services provider.
+        platform (str): Streaming services provider:
+        [
+            "amazon_prime",
+            "disney_plus",
+            "hulu",
+            "netflix"
+        ].
 
     Returns:
         obj: Query response.
@@ -125,7 +143,13 @@ def get_actor(
 
     Args:
         year (int): Year of movie/series first stream.
-        platform (str): Streaming services provider.
+        platform (str): Streaming services provider:
+        [
+            "amazon_prime",
+            "disney_plus",
+            "hulu",
+            "netflix"
+        ].
 
     Returns:
         obj: Query response.
