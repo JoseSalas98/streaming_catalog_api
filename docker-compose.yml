@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  api:
+    build: ./src/api
+    restart: always
+    ports:
+      - 8000:8000
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app-http.rule=Host(`ssl.ahmedbesbes.com`)
+      - traefik.http.routers.app-http.tls=true
+      - traefik.http.routers.app-http.tls.certresolver=letsencrypt
+
+  traefik:
+    image: traefik:v2.3
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $PWD/src/traefik/traefik.toml:/etc/traefik/traefik.toml
+      - traefik_public_certificates:/certificates
+
+volumes:
+  traefik_public_certificates:
